@@ -12,20 +12,20 @@ typedef struct GraphType {
 
 }GraphType;
 
-int selected[MAX_VERTICES]; 
-int distance[MAX_VERTICES];
+int selected[MAX_VERTICES]; //선택된 정점의 정보(선택 유무)
+int distance[MAX_VERTICES]; //최소 거리 정보 배열
 
 int get_min_vertex(int n) {
 	int v, i;
 	for (i = 0; i < n; i++) {
-		if (!selected[i]) {
+		if (!selected[i]) { //선택되지 않은 정점의 번호를 v에 저장
 			v = i;
 			break;
 
 		}
 	}
-	for (i = 0; i < n; i++) {
-		if (!selected[i] && (distance[i] < distance[v]))
+	for (i = 0; i < n; i++) { //선택된 정점이 최소거리인지 확인
+		if (!selected[i] && (distance[i] < distance[v])) //선택되지 않고, 거리가 짧으면
 			v = i;
 	}
 	return (v);
@@ -34,13 +34,13 @@ int get_min_vertex(int n) {
 void prim(GraphType* g, int s) {
 	int i, u, v;
 
-	for (u = 0; u < g->n; u++)
+	for (u = 0; u < g->n; u++) //초기화
 		distance[u] = INF;
-	distance[s] = 0;
+	distance[s] = 0; //자기자신 순회x
 	for (i = 0; i < g->n; i++) {
 		u = get_min_vertex(g->n);
 		selected[u] = TRUE;
-		if (distance[u] == INF) return;
+		if (distance[u] == INF) return; //경로가 없다면 함수 종료
 		printf("정점 %d 추가\n", u + 1);
 		for (v = 0; v < g->n; v++) {
 			if (g->weight[u][v] != INF)
@@ -53,7 +53,8 @@ void prim(GraphType* g, int s) {
 
 int main(void) {
 	printf("Prim MST Algorithm\n");
-	GraphType g = {10,	
+
+	GraphType g = {10,	 //그래프 생성
 	{{0 ,3 ,INF,INF,INF,11 ,12 ,INF,INF,INF},
 	{3 ,0 ,5 ,4 ,1 ,7 ,8 ,INF,INF,INF},
 	{INF,5 ,0 ,2 ,INF,INF,6 ,5 ,INF,INF},
